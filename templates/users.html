@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Users</title>
+    <meta name="description" content="APP Web Task 5">
+    <meta name="author" content="SitePoint">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="{{ url_for('static', filename='../css/mystyle.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ url_for('static', filename='../scripts/ajax-test.js') }}" type="text/javascript"></script>
+</head>
+
+<body class="w3-light-grey">
+<div class="w3-content" style = "max-width: 1550px">
+
+    <!-- Title -->
+    <header id="header">
+        <div class="w3-center w3-container w3-padding-32 " id="head">
+            <h1 class="w3-xxlarge"><b>RECORD BOOK SYSTEM</b></h1>
+            <h5 >Single Page App</h5>
+
+        </div>
+
+    </header>
+
+    <!-- Grid for main content -->
+    <div class="w3-row w3-padding">
+
+        <!-- Users Column -->
+        <!-- s12 (small 12col) m12 (mobile 12col, includes minimized window) l8 (large 8col) -->
+        <div class="w3-col s12 m12 l8">
+
+            <!--Users table container -->
+            <div class="w3-container  w3-padding-large" id="usersTable">
+                <section id="sectUsers" >
+                    <div >
+                        <div class="w3-center">
+                            <h2 id="usersTableHeading" >Users</h2><hr>
+                        </div>
+                        <table id="tblUsers" align="center" width="100%" >
+                            <tbody>
+                                <tr  id="tblUserHeader">
+                                    <th>User ID</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Avatar</th>
+                                </tr>
+                                <tr  id="user1"><td >1</td><td >george.bluth@reqres.in</td><td>George</td><td>Bluth</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg" alt="avatar"></td></tr>
+                                <tr  id="user2"><td >2</td><td >janet.weaver@reqres.in</td><td>Janet</td><td>Weaver</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg" alt="avatar"></td></tr>
+                                <tr  id="user3"><td >3</td><td >emma.wong@reqres.in</td><td>Emma</td><td>Wong</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg" alt="avatar"></td></tr>
+                                <tr  id="user4"><td >4</td><td >eve.holt@reqres.in</td><td>Eve</td><td>Holt</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" alt="avatar"></td></tr>
+                                <tr  id="user5"><td >5</td><td >charles.morris@reqres.in</td><td>Charles</td><td>Morris</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg" alt="avatar"></td></tr>
+                                <tr  id="user6"><td >6</td><td >tracey.ramos@reqres.in</td><td>Tracey</td><td>Ramos</td><td ><img src="https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg" alt="avatar"></td></tr>
+                            </tbody>
+                        </table>
+                        <div id="pageNumbers">
+                            <hr><div id="divPageNumber">Page <span id="pageNumber">1</span> of <span id="totalPages">2</span></div>
+                        </div>
+                        <button id="btnPrevious" ><< Previous</button><button id="btnNext" >Next >></button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!--New User Column -->
+        <div class="w3-col s12 l4 w3-padding">
+
+            <!-- New User Container -->
+            <div class="w3-padding-large" id="newUserContainer">
+                <section id="sectNewUser" >
+                    <div class="w3-container">
+                        <h2 class="w3-center" id="newUserHeading" >New User</h2>
+                        <div >
+                            <form id="frmNewUser" >
+                                <label for="userName">Username:</label>
+                                <input type="text" id="userName" placeholder="User Name" ><br>
+                                <label for="userJob">Job:</label>
+                                <input type="text" id="userJob" placeholder="Job"><br>
+                                <div >
+                                    <button id="btnNewUser" >New User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Edit User Column -->
+        <div class="w3-col s12 l4 w3-padding">
+
+            <!-- User container -->
+            <div class="w3-padding-large" id="userContainer">
+                <section id="sectUser" >
+                    <div class="w3-container w3-center" id="userHeading">
+                        <h2 >User</h2>
+                    </div>
+                    <img id="userAvatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg" alt="avatar" style="width: 100%">
+                    <div >
+                        <div >
+                            <form id="frmUser" >
+                                <hr>
+                                <label for="userID">User ID:</label>
+                                <input type="text" id="userID" placeholder="ID"><br>
+                                <hr>
+                                <label for="userEmail">Email:</label>
+                                <input type="text" id="userEmail" placeholder="Email"><br>
+                                <hr>
+                                <label for="userFirstName">First Name:</label>
+                                <input type="text" id="userFirstName" placeholder="First Name"><br>
+                                <hr>
+                                <label for="userLastName">Last Name:</label>
+                                <input type="text" id="userLastName" placeholder="Last Name">
+                                <hr>
+                                <div >
+                                    <button id="btnSaveUser" >Save Changes</button>
+                                    <button id="btnDeleteUser" >Delete User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+</body>
+</html>
