@@ -2,6 +2,7 @@
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__, static_url_path='')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 
 users = [

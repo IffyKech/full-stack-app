@@ -71,6 +71,10 @@ td {
     background: ghostwhite;
 }
 
+#users {
+    cursor: pointer;
+}
+
 #pageNumbers {
     text-align: center;
 }

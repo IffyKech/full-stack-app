@@ -1,5 +1,9 @@
-getUsers = function(pageNo) {
-    console.log("Hello");
+/**
+ *
+ * @param {int} pageNo - the route number for the page of users
+ */
+function getUsers(pageNo) {
+
     let xmlhttp = new XMLHttpRequest();
     let users = [];
 
@@ -7,8 +11,7 @@ getUsers = function(pageNo) {
         if (this.readyState === 4 && this.status === 200) { // check status of http request
 
             users = JSON.parse(this.responseText); // create an Object of the parsed JSON
-            console.table(users);
-            changeTableContents("tblUsers", users);
+            changeTableContents("tblUsers", users, pageNo);
 
         }
     }
@@ -24,17 +27,19 @@ getUsers = function(pageNo) {
  *
  * @param {string} tableID - The ID of the table to edit, Array of JSON objects
  * @param {Array} users - An array of JSON objects of users
+ * @param {int} pageNo - the page number for the current page
  */
-changeTableContents = function (tableID, users) {
+function changeTableContents(tableID, users, pageNo) {
 
-    var table = document.getElementById(tableID);
+    let table = document.getElementById(tableID);
 
 
     for (let i = 1; i < table.rows.length; i++) { // iterate through the rows of users
 
         // sort the JSON data to the same format as the table data
-        let userData = [users.data[i-1].id, users.data[i-1].email, users.data[i-1].first_name, users.data[i-1].last_name
-        ,'<img src="'+ users.data[i-1].avatar + '" alt="avatar">'];
+        let userData = [users[i-1].id, users[i-1].email, users[i-1].first_name, users[i-1].last_name
+        ,'<img src="'+ users[i-1].avatar + '" alt="avatar">'];
+
 
         for (let x = 0; x < table.rows[i].cells.length; x++) { // iterate through the cells in the rows of users
 
@@ -44,20 +49,49 @@ changeTableContents = function (tableID, users) {
 
     }
 
+    let pageNumber = document.getElementById("pageNumber");
+    pageNumber.innerHTML = pageNo.toString();
+
 }
 
-// getUsers();
+function displaySingleUser(ev){
+
+    // targets the user that is clicked on to display that specific user
+    let target = ev.target
+    let text = target.innerText;
+
+    //TODO: note, avatars dont work and so shouldn't be used for the get function. Exclude by comparing for an empty string
+    //TODO: do the single get user function
+    console.log(text);
+
+}
 
 
 initPage = function() {
-
-    console.log("hello");
+    /**
+     * GET USERS, sets the table buttons to functions to get users from JSON
+     *
+     */
     // table buttons
-    let pageOneButton = document.getElementById("btnPrevious");
-    let pageTwoButton = document.getElementById("btnNext");
+    let pageOneButton = document.getElementById('btnPrevious');
+    let pageTwoButton = document.getElementById('btnNext');
 
-    pageOneButton.onclick = getUsers(1);
-    pageTwoButton.onclick = getUsers(2);
+    pageOneButton.addEventListener("click", function(){getUsers(1)});
+    pageTwoButton.addEventListener("click", function(){getUsers(2)});
+
+    /**
+     * GET USER, sets the table rows a function to get a single user
+     *
+     */
+    for (let i = 1; i < document.getElementById("tblUsers").rows.length; i++) { // iterate through the users
+
+        // get each user in the table by their <tr> ID
+        let user = document.getElementById("user" + i.toString())
+
+        // add a click function to the user that displays them
+        user.addEventListener("click", function (ev) {displaySingleUser(ev)});
+
+    }
 
 }
 
