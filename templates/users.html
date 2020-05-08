@@ -27,6 +27,35 @@
     <!-- Grid for main content -->
     <div class="w3-row w3-padding">
 
+        <!-- Modal pop up for single user -->
+        <div id="modal" class="w3-modal">
+
+            <div class="w3-modal-content">
+
+                <!-- Header for full name -->
+                <header id="modalHeader" class="w3-container">
+                    <span onclick="document.getElementById('modal').style.display='none'"
+                          class="w3-button w3-display-topright">&times;</span>
+                    <h2 id="modalHeaderText">Filler</h2>
+                </header>
+
+                <!-- Avatar Container -->
+                <div id="modalAvatar" class="w3-container">
+                    <img id="modalImg" src="https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"
+                         alt="avatar" style="width: 75%">
+                </div>
+
+                <!-- Footer container -->
+                <footer id="modalFooter" class="w3-container">
+                    <p id="modalFooterID"></p>
+                    <p id="modalFooterEmail"></p>
+                    <p id="modalFooterFName"></p>
+                    <p id="modalFooterLName"></p>
+                </footer>
+
+            </div>
+        </div>
+
         <!-- Users Column -->
         <!-- s12 (small 12col) m12 (mobile 12col, includes minimized window) l8 (large 8col) -->
         <div class="w3-col s12 m12 l8">

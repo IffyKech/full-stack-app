@@ -60,9 +60,15 @@ function displaySingleUser(ev){
     // targets the user that is clicked on to display that specific user
     let target = ev.target
     let userToFind = target.innerText;
+
+    // Converts a string of an int to an int (for a future comparison statement)
+    if (!isNaN(userToFind)) { // if the string contains a number (in this case, the ID)
+        userToFind = parseInt(userToFind); // convert it to a number
+    }
+
     let users = [];
 
-    if (userToFind !== "") { // if the avatar was not clicked, as it does not return text
+    if (userToFind !== undefined) { // if the avatar was not clicked, as it does not return text
 
         let xmlhttp = new XMLHttpRequest();
 
@@ -82,29 +88,46 @@ function displaySingleUser(ev){
 
     }
 
-
-
 }
 
 
-//TODO: create modal box with user
 function createModalBox(userToFind, users) {
 
     let user;
 
-    for (let i = 0; i , users.length; i++) {
+    try {
 
-        if (Object.values(users[i]).includes(userToFind)) {
+        for (let i = 0; i , users.length; i++) {
 
-            user = users[i];
-            break;
+            if (Object.values(users[i]).includes(userToFind)) {
+
+                user = users[i];
+                break;
+
+            }
 
         }
 
+        // Edit Modal attributes to the selected user
+        document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
+        document.getElementById("modalImg").src = user.avatar;
+        document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
+        document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
+        document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
+        document.getElementById("modalFooterLName").innerHTML = "Lastname: " + user.last_name;
+
+        // Get modal
+        let modal = document.getElementById("modal");
+
+        // Display the modal
+        modal.style.display='block';
+
     }
 
-    console.log("Worked");
-    console.log(user);
+    //TODO: ask what to do about this, is it okay to leave blank? What is best practise?
+    catch (TypeError) {
+        console.log("Type Error");
+    }
 
 }
 

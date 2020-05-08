@@ -12,6 +12,28 @@ button {
 }
 
 /*
+CSS for MODAL BOX
+ */
+#modalHeader{
+    background: lightslategray;
+    color: white;
+}
+
+#modalFooter{
+    background: ghostwhite;
+}
+
+#modalAvatar {
+    background: aliceblue;
+}
+
+#modalImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
 CSS for NEW USER section
  */
 
