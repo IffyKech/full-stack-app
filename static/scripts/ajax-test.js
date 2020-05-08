@@ -2,7 +2,7 @@
  *
  * @param {int} pageNo - the route number for the page of users
  */
-function getUsers(pageNo) {
+function displayListOfUsers(pageNo) {
 
     let xmlhttp = new XMLHttpRequest();
     let users = [];
@@ -54,15 +54,57 @@ function changeTableContents(tableID, users, pageNo) {
 
 }
 
+
 function displaySingleUser(ev){
 
     // targets the user that is clicked on to display that specific user
     let target = ev.target
-    let text = target.innerText;
+    let userToFind = target.innerText;
+    let users = [];
 
-    //TODO: note, avatars dont work and so shouldn't be used for the get function. Exclude by comparing for an empty string
-    //TODO: do the single get user function
-    console.log(text);
+    if (userToFind !== "") { // if the avatar was not clicked, as it does not return text
+
+        let xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function () {
+
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+
+                users = JSON.parse(this.responseText);
+                createModalBox(userToFind, users);
+
+            }
+
+        }
+
+        xmlhttp.open("GET", "http://127.0.0.1:5000/api/users", true);
+        xmlhttp.send();
+
+    }
+
+
+
+}
+
+
+//TODO: create modal box with user
+function createModalBox(userToFind, users) {
+
+    let user;
+
+    for (let i = 0; i , users.length; i++) {
+
+        if (Object.values(users[i]).includes(userToFind)) {
+
+            user = users[i];
+            break;
+
+        }
+
+    }
+
+    console.log("Worked");
+    console.log(user);
 
 }
 
@@ -76,8 +118,8 @@ initPage = function() {
     let pageOneButton = document.getElementById('btnPrevious');
     let pageTwoButton = document.getElementById('btnNext');
 
-    pageOneButton.addEventListener("click", function(){getUsers(1)});
-    pageTwoButton.addEventListener("click", function(){getUsers(2)});
+    pageOneButton.addEventListener("click", function(){displayListOfUsers(1)});
+    pageTwoButton.addEventListener("click", function(){displayListOfUsers(2)});
 
     /**
      * GET USER, sets the table rows a function to get a single user
