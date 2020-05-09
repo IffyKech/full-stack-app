@@ -16,7 +16,7 @@ function displayListOfUsers(pageNo) {
         }
     }
 
-    xmlhttp.open("GET", "http://127.0.0.1:5000/api/users/" + pageNo.toString(), true);
+    xmlhttp.open("GET", "http://127.0.0.1:5000/api/users/page" + pageNo.toString(), true);
     xmlhttp.send();
 
 }
@@ -58,17 +58,17 @@ function changeTableContents(tableID, users, pageNo) {
 function displaySingleUser(ev){
 
     // targets the user that is clicked on to display that specific user
-    let target = ev.target
+    let target = ev.target;
     let userToFind = target.innerText;
 
     // Converts a string of an int to an int (for a future comparison statement)
-    if (!isNaN(userToFind)) { // if the string contains a number (in this case, the ID)
-        userToFind = parseInt(userToFind); // convert it to a number
+    if (!isNaN(userToFind) && userToFind.length > 0) {  // if the string contains a number (in this case, the ID)
+
+        userToFind = parseInt(userToFind);  // convert it to a number
+
     }
 
-    let users = [];
-
-    if (userToFind !== undefined) { // if the avatar was not clicked, as it does not return text
+    if (userToFind !== "") {  // if the avatar was not clicked, as it does not return text
 
         let xmlhttp = new XMLHttpRequest();
 
@@ -76,14 +76,13 @@ function displaySingleUser(ev){
 
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
-                users = JSON.parse(this.responseText);
-                createModalBox(userToFind, users);
+                createModalBox(userToFind, (JSON.parse(this.responseText)));
 
             }
 
         }
 
-        xmlhttp.open("GET", "http://127.0.0.1:5000/api/users", true);
+        xmlhttp.open("GET", "http://127.0.0.1:5000/api/users/" + userToFind.toString(), true);
         xmlhttp.send();
 
     }
@@ -91,43 +90,22 @@ function displaySingleUser(ev){
 }
 
 
-function createModalBox(userToFind, users) {
+function createModalBox(userToFind, user) {
 
-    let user;
+    // Edit Modal attributes to the selected user
+    document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
+    document.getElementById("modalImg").src = user.avatar;
+    document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
+    document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
+    document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
+    document.getElementById("modalFooterLName").innerHTML = "Lastname: " + user.last_name;
 
-    try {
+    // Get modal
+    let modal = document.getElementById("modal");
 
-        for (let i = 0; i , users.length; i++) {
+    // Display the modal
+    modal.style.display='block';
 
-            if (Object.values(users[i]).includes(userToFind)) {
-
-                user = users[i];
-                break;
-
-            }
-
-        }
-
-        // Edit Modal attributes to the selected user
-        document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
-        document.getElementById("modalImg").src = user.avatar;
-        document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
-        document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
-        document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
-        document.getElementById("modalFooterLName").innerHTML = "Lastname: " + user.last_name;
-
-        // Get modal
-        let modal = document.getElementById("modal");
-
-        // Display the modal
-        modal.style.display='block';
-
-    }
-
-    //TODO: ask what to do about this, is it okay to leave blank? What is best practise?
-    catch (TypeError) {
-        console.log("Type Error");
-    }
 
 }
 

@@ -48,7 +48,21 @@ def return_all_users():
     return jsonify(users)
 
 
-@app.route('/api/users/<pageno>', methods=["GET"])
+@app.route('/api/users/<user_to_find>')
+def return_single_user(user_to_find):
+    for user in users:
+        for key, value in user.items():  # searches through keys/values of user dict
+            if user_to_find != value:
+                try:
+                    if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
+                        return jsonify(user)
+                except:
+                    print("Not an ID")
+            else:  # if the user searched for is in the list of users
+                return jsonify(user)
+
+
+@app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
     if pageno == "1":
         return jsonify(users[0:6])
