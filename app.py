@@ -56,8 +56,9 @@ def return_single_user(user_to_find):
                 try:
                     if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
                         return jsonify(user)
+                #TODO: ask if this is okay (pass), what is best practise, what should i do instead
                 except:
-                    print("Not an ID")
+                    pass
             else:  # if the user searched for is in the list of users
                 return jsonify(user)
 
