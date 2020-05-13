@@ -111,6 +111,7 @@ function createModalBox(userToFind, user) {
 
 
 initPage = function() {
+    let currentPage = 1;
     /**
      * GET USERS, sets the table buttons to functions to get users from JSON
      *
@@ -118,9 +119,9 @@ initPage = function() {
     // table buttons
     let pageOneButton = document.getElementById('btnPrevious');
     let pageTwoButton = document.getElementById('btnNext');
-
+    
     pageOneButton.addEventListener("click", function(){displayListOfUsers(1)});
-    pageTwoButton.addEventListener("click", function(){displayListOfUsers(2)});
+    pageTwoButton.addEventListener("click", function(){displayListOfUsers(currentPage + 1)});
 
     /**
      * GET USER, sets the table rows a function to get a single user

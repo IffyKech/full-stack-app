@@ -5,6 +5,7 @@ app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 
+
 users = [
     {"id": 1, "email": "george.bluth@reqres.in", "first_name": "George", "last_name": "Bluth",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"},
@@ -56,19 +57,26 @@ def return_single_user(user_to_find):
                 try:
                     if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
                         return jsonify(user)
-                #TODO: ask if this is okay (pass), what is best practise, what should i do instead
+                # TODO: ask if this is okay (pass), what is best practise, what should i do instead
                 except:
                     pass
             else:  # if the user searched for is in the list of users
                 return jsonify(user)
 
 
+#  TODO: Sort out new paging algorithm, make it dynamic so it slices users and returns the pages dynamically
+
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
-    if pageno == "1":
-        return jsonify(users[0:6])
-    elif pageno == "2":
-        return jsonify(users[6:])
+    if pageno == 1:
+        start_slice = 0
+    else:
+        start_slice = (5 * (pageno - 1) + pageno) - 1
+    try:
+        end_slice = start_slice + 6
+        return users[start_slice: end_slice]
+    except IndexError:
+        return users[start_slice:]
 
 
 if __name__ == '__main__':
