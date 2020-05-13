@@ -38,11 +38,7 @@ users = [
     {"id": 15, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
     {"id": 16, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
-     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
-    {"id": 17, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
-     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
-    {"id": 18, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
-     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"}
 ]
 
 
