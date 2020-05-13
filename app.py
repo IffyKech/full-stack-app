@@ -30,7 +30,19 @@ users = [
     {"id": 11, "email": "george.edwards@reqres.in", "first_name": "George", "last_name": "Edwards",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg"},
     {"id": 12, "email": "rachel.howell@reqres.in", "first_name": "Rachel", "last_name": "Howell",
-     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"}
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 13, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 14, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 15, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 16, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 17, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 18, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
 ]
 
 
