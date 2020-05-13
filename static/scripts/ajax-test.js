@@ -136,7 +136,7 @@ function createModalBox(userToFind, user) {
 
     // Edit Modal attributes to the selected user
     document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
-    document.getElementById("modalImg").src = user.data.avatar;
+    document.getElementById("modalImg").src = user.avatar;
     document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
     document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
     document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
