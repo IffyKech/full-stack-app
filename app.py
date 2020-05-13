@@ -5,7 +5,6 @@ app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 
-
 users = [
     {"id": 1, "email": "george.bluth@reqres.in", "first_name": "George", "last_name": "Bluth",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"},
@@ -38,6 +37,12 @@ users = [
     {"id": 15, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
     {"id": 16, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 17, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 18, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
+     "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
+    {"id": 19, "email": "iffykech@gmail.com", "first_name": "Iffy", "last_name": "Okechukwu",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"}
 ]
 
@@ -72,15 +77,10 @@ def return_single_user(user_to_find):
                 return jsonify(user)
 
 
-#  TODO: Sort out new paging algorithm, make it dynamic so it slices users and returns the pages dynamically
-
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
     pageno = str(pageno)
-    if pageno == 1:
-        start_slice = 0
-    else:
-        start_slice = (5 * (int(pageno) - 1) + int(pageno)) - 1
+    start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
     try:
         end_slice = start_slice + 6
         return jsonify(users[start_slice: end_slice])
