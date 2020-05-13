@@ -1,8 +1,40 @@
+let currentPage = 1;
+let totalPages;
+
+function getTotalPages() {
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            totalPages = JSON.parse(this.responseText).length / 6;
+            document.getElementById("totalPages").innerHTML = totalPages;
+        }
+    }
+
+    xmlhttp.open("GET", "http://127.0.0.1:5000/api/users", true);
+    xmlhttp.send();
+
+}
 /**
  *
+ * @param ev - button clicked
  * @param {int} pageNo - the route number for the page of users
  */
-function displayListOfUsers(pageNo) {
+function displayListOfUsers(ev, pageNo) {
+    // get the button pressed
+    let target = ev.target;
+
+    // if the 'previous' button was pressed, and there is another page to go back to:
+    if (target.id === "btnPrevious" && currentPage !== 1) {
+        pageNo = currentPage - 1
+        currentPage = pageNo;
+    }
+
+    // if the 'next' button was pressed, and there is another page to go forwards to:
+    else if (target.id === "btnNext" && currentPage + 1 < totalPages + 1) {
+        pageNo = currentPage + 1
+        currentPage = pageNo;
+    }
 
     let xmlhttp = new XMLHttpRequest();
     let users = [];
@@ -59,6 +91,7 @@ function displaySingleUser(ev){
 
     // targets the user that is clicked on to display that specific user
     let target = ev.target;
+
     let userToFind = target.innerText;
 
     // Converts a string of an int to an int (for a future comparison statement)
@@ -94,7 +127,7 @@ function createModalBox(userToFind, user) {
 
     // Edit Modal attributes to the selected user
     document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
-    document.getElementById("modalImg").src = user.avatar;
+    document.getElementById("modalImg").src = user.data.avatar;
     document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
     document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
     document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
@@ -111,7 +144,7 @@ function createModalBox(userToFind, user) {
 
 
 initPage = function() {
-    let currentPage = 1;
+    getTotalPages();
     /**
      * GET USERS, sets the table buttons to functions to get users from JSON
      *
@@ -119,9 +152,9 @@ initPage = function() {
     // table buttons
     let pageOneButton = document.getElementById('btnPrevious');
     let pageTwoButton = document.getElementById('btnNext');
-    
-    pageOneButton.addEventListener("click", function(){displayListOfUsers(1)});
-    pageTwoButton.addEventListener("click", function(){displayListOfUsers(currentPage + 1)});
+
+    pageOneButton.addEventListener("click", function(ev){displayListOfUsers(ev, currentPage)});
+    pageTwoButton.addEventListener("click", function(ev){displayListOfUsers(ev, currentPage)});
 
     /**
      * GET USER, sets the table rows a function to get a single user

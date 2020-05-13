@@ -68,15 +68,16 @@ def return_single_user(user_to_find):
 
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
+    pageno = str(pageno)
     if pageno == 1:
         start_slice = 0
     else:
-        start_slice = (5 * (pageno - 1) + pageno) - 1
+        start_slice = (5 * (int(pageno) - 1) + int(pageno)) - 1
     try:
         end_slice = start_slice + 6
-        return users[start_slice: end_slice]
+        return jsonify(users[start_slice: end_slice])
     except IndexError:
-        return users[start_slice:]
+        return jsonify(users[start_slice:])
 
 
 if __name__ == '__main__':
