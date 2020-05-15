@@ -10,6 +10,7 @@ function getTotalPages() {
         if (this.readyState === 4 && this.status === 200) {
 
             let amountOfUsers = JSON.parse(this.responseText).length;
+            // round the amount of users to the nearest multiple of 6 (to prevent 'totalPages' from being a float)
             totalPages = (Math.ceil(amountOfUsers / 6) * 6) / 6;
             document.getElementById("totalPages").innerHTML = totalPages;
 
@@ -77,11 +78,10 @@ function changeTableContents(tableID, users, pageNo) {
 
     for (let i = 1; i < table.rows.length; i++) { // iterate through the rows of users
 
-        // sort the JSON data to the same format as the table data
         let userData = ["", "", "", "", ""];
 
         try {
-
+            // sort the JSON data to the same format as the table data
             userData = [users[i-1].id, users[i-1].email, users[i-1].first_name, users[i-1].last_name
                 ,'<img src="'+ users[i-1].avatar + '" alt="avatar">'];
 

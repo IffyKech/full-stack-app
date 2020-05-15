@@ -70,8 +70,7 @@ def return_single_user(user_to_find):
                 try:
                     if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
                         return jsonify(user)
-                # TODO: ask if this is okay (pass), what is best practise, what should i do instead
-                except:
+                except TypeError:
                     pass
             else:  # if the user searched for is in the list of users
                 return jsonify(user)
@@ -79,13 +78,17 @@ def return_single_user(user_to_find):
 
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
+
     pageno = str(pageno)
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
+
     try:
+        print(users[start_slice])  # eval statement for try block, checks if the page entered contains users
         end_slice = start_slice + 6
         return jsonify(users[start_slice: end_slice])
-    except IndexError:
-        return jsonify(users[start_slice:])
+
+    except IndexError:  # runs if the eval statement above fails 
+        return "404 Page Not Found"
 
 
 if __name__ == '__main__':
