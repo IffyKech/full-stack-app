@@ -2,14 +2,19 @@ let currentPage = 1;
 let totalPages;
 
 function getTotalPages() {
+
     let xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function () {
+
         if (this.readyState === 4 && this.status === 200) {
+
             let amountOfUsers = JSON.parse(this.responseText).length;
             totalPages = (Math.ceil(amountOfUsers / 6) * 6) / 6;
             document.getElementById("totalPages").innerHTML = totalPages;
+
         }
+
     }
 
     xmlhttp.open("GET", "http://127.0.0.1:5000/api/users", true);
@@ -27,23 +32,27 @@ function displayListOfUsers(ev, pageNo) {
 
     // if the 'previous' button was pressed, and there is another page to go back to:
     if (target.id === "btnPrevious" && currentPage !== 1) {
+
         pageNo = currentPage - 1
         currentPage = pageNo;
+
     }
 
     // if the 'next' button was pressed, and there is another page to go forwards to:
     else if (target.id === "btnNext" && currentPage + 1 < totalPages + 1) {
+
         pageNo = currentPage + 1
         currentPage = pageNo;
+
     }
 
     let xmlhttp = new XMLHttpRequest();
-    let users = [];
 
     xmlhttp.onreadystatechange = function () {
+
         if (this.readyState === 4 && this.status === 200) { // check status of http request
 
-            users = JSON.parse(this.responseText); // create an Object of the parsed JSON
+            let users = JSON.parse(this.responseText); // create an Object of the parsed JSON
             changeTableContents("tblUsers", users, pageNo);
 
         }
@@ -66,21 +75,21 @@ function changeTableContents(tableID, users, pageNo) {
 
     let table = document.getElementById(tableID);
 
-
     for (let i = 1; i < table.rows.length; i++) { // iterate through the rows of users
 
         // sort the JSON data to the same format as the table data
         let userData = ["", "", "", "", ""];
 
         try {
+
             userData = [users[i-1].id, users[i-1].email, users[i-1].first_name, users[i-1].last_name
                 ,'<img src="'+ users[i-1].avatar + '" alt="avatar">'];
+
         }
 
         catch (e) {
 
         }
-
 
         for (let x = 0; x < table.rows[i].cells.length; x++) { // iterate through the cells in the rows of users
 
@@ -96,19 +105,11 @@ function changeTableContents(tableID, users, pageNo) {
 }
 
 
-function displaySingleUser(ev){
+function findUserToDisplay (ev) {
 
     // targets the user that is clicked on to display that specific user
     let target = ev.target;
-
     let userToFind = target.innerText;
-
-    // Converts a string of an int to an int (for a future comparison statement)
-    if (!isNaN(userToFind) && userToFind.length > 0) {  // if the string contains a number (in this case, the ID)
-
-        userToFind = parseInt(userToFind);  // convert it to a number
-
-    }
 
     if (userToFind !== "") {  // if the avatar was not clicked, as it does not return text
 
@@ -118,13 +119,14 @@ function displaySingleUser(ev){
 
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
-                createModalBox(userToFind, (JSON.parse(this.responseText)));
+                let user = JSON.parse(this.responseText);
+                displaySingleUser(user);
 
             }
 
         }
 
-        xmlhttp.open("GET", "http://127.0.0.1:5000/api/users/" + userToFind.toString(), true);
+        xmlhttp.open("GET", "http://127.0.0.1:5000/api/users/" + userToFind.toString(), true)
         xmlhttp.send();
 
     }
@@ -132,28 +134,30 @@ function displaySingleUser(ev){
 }
 
 
-function createModalBox(userToFind, user) {
+function displaySingleUser(users){
 
-    // Edit Modal attributes to the selected user
-    document.getElementById("modalHeaderText").innerHTML = user.first_name + " " + user.last_name;
-    document.getElementById("modalImg").src = user.avatar;
-    document.getElementById("modalFooterID").innerHTML = "User ID: " + user.id;
-    document.getElementById("modalFooterEmail").innerHTML = "Email: " + user.email;
-    document.getElementById("modalFooterFName").innerHTML = "Firstname: " + user.first_name;
-    document.getElementById("modalFooterLName").innerHTML = "Lastname: " + user.last_name;
+    let userId = document.getElementById("userID");
+    userId.value = users.id;
 
-    // Get modal
-    let modal = document.getElementById("modal");
+    let userEmail = document.getElementById("userEmail");
+    userEmail.value = users.email;
 
-    // Display the modal
-    modal.style.display='block';
+    let userName = document.getElementById("userFirstName");
+    userName.value = users.first_name;
 
+    let userSurname = document.getElementById("userLastName");
+    userSurname.value = users.last_name;
+
+    let userAvatar = document.getElementById("userAvatar");
+    userAvatar.src = users.avatar;
 
 }
 
 
 initPage = function() {
+
     getTotalPages();
+    
     /**
      * GET USERS, sets the table buttons to functions to get users from JSON
      *
@@ -175,7 +179,7 @@ initPage = function() {
         let user = document.getElementById("user" + i.toString())
 
         // add a click function to the user that displays them
-        user.addEventListener("click", function (ev) {displaySingleUser(ev)});
+        user.addEventListener("click", function (ev) {findUserToDisplay(ev)});
 
     }
 
