@@ -63,7 +63,7 @@ def return_all_users():
 
 
 # GET SINGLE USER
-@app.route('/api/users/<user_to_find>')
+@app.route('/api/users/<user_to_find>', methods=["GET"])
 def return_single_user(user_to_find):
     for user in users:
         for key, value in user.items():  # searches through keys/values of user dict
@@ -93,8 +93,22 @@ def return_users(pageno):
         return "404 Page Not Found"
 
 
-
 # DELETE USER
+@app.route('/api/users/delete/<user_to_find>', methods=["DELETE"])
+def delete_user(user_to_find):
+    for index in range(0, len(users)):
+        for key, values in users[index].items():
+            if user_to_find != values:
+                try:
+                    if int(user_to_find) == values:
+                        del users[index]
+                        break
+                except ValueError:
+                    pass
+            else:
+                del users[index]
+                break
+    return jsonify(users)
 
 if __name__ == '__main__':
     app.run()
