@@ -62,6 +62,7 @@ def return_all_users():
     return jsonify(users)
 
 
+# GET SINGLE USER
 @app.route('/api/users/<user_to_find>')
 def return_single_user(user_to_find):
     for user in users:
@@ -70,12 +71,13 @@ def return_single_user(user_to_find):
                 try:
                     if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
                         return jsonify(user)
-                except TypeError:
+                except ValueError:
                     pass
             else:  # if the user searched for is in the list of users
                 return jsonify(user)
 
 
+# GET LIST OF USERS
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
 
@@ -87,9 +89,12 @@ def return_users(pageno):
         end_slice = start_slice + 6
         return jsonify(users[start_slice: end_slice])
 
-    except IndexError:  # runs if the eval statement above fails 
+    except IndexError:  # runs if the eval statement above fails
         return "404 Page Not Found"
 
+
+
+# DELETE USER
 
 if __name__ == '__main__':
     app.run()
