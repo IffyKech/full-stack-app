@@ -1,6 +1,9 @@
 let currentPage = 1;
 let totalPages;
 
+// TODO: for post, get details to create (e.g. fname, lname etc.) and make an object (dictionary) of those values,
+// then send the object to a resource for the backend to receive and unpack and add to the database
+
 function getTotalPages() {
 
     let xmlhttp = new XMLHttpRequest();
@@ -117,7 +120,7 @@ function findUserToDisplay (ev) {
 
         xmlhttp.onreadystatechange = function () {
 
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            if (this.readyState === 4 && this.status === 200) {
 
                 let user = JSON.parse(this.responseText);
                 displaySingleUser(user);
@@ -154,6 +157,39 @@ function displaySingleUser(users){
 }
 
 
+function deleteUser() {
+
+    // ID of the user to delete
+    let IDToDelete = document.getElementById("userID").value;
+
+    if (IDToDelete === "") {
+        alert("Select a user to delete");
+    }
+
+    else {
+
+        let xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function () {
+
+            if (this.readyState === 4 && this.status === 200 ) {
+
+                let users = JSON.parse(this.responseText);
+                displayListOfUsers(undefined, currentPage);
+
+            }
+
+        }
+
+        xmlhttp.open("DELETE", "http://127.0.0.1:5000/api/users/" + IDToDelete.toString(), true);
+        xmlhttp.send();
+
+    }
+
+
+}
+
+
 initPage = function() {
 
     getTotalPages();
@@ -182,6 +218,12 @@ initPage = function() {
         user.addEventListener("click", function (ev) {findUserToDisplay(ev)});
 
     }
+
+    // edit user buttons
+    let saveUserButton = document.getElementById("btnSaveUser");
+    let deleteUserButton = document.getElementById("btnDeleteUser");
+
+    deleteUserButton.addEventListener("click", function () {deleteUser()});
 
 }
 
