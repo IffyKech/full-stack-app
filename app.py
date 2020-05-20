@@ -1,9 +1,8 @@
-""" Forgot to add a DocString """
+""" Full page app """
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
-
 
 users = [
     {"id": 1, "email": "george.bluth@reqres.in", "first_name": "George", "last_name": "Bluth",
@@ -30,20 +29,20 @@ users = [
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg"},
     {"id": 12, "email": "rachel.howell@reqres.in", "first_name": "Rachel", "last_name": "Howell",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
-    {"id":13,"email":"aouterbridge0@cdc.gov","first_name":"Addi","last_name":"Outerbridge",
-     "avatar":"https://robohash.org/voluptatemollitianecessitatibus.jpg"},
-    {"id":14,"email":"gzanuciolii1@hugedomains.com","first_name":"Grissel","last_name":"Zanuciolii",
-     "avatar":"https://robohash.org/estutqui.jpg"},
-    {"id":15,"email":"gpenquet2@mozilla.com","first_name":"Gwen","last_name":"Penquet",
-     "avatar":"https://robohash.org/optiodelectusvoluptates.jpg"},
-    {"id":16,"email":"bfeast3@usda.gov","first_name":"Brunhilda","last_name":"Feast",
-     "avatar":"https://robohash.org/laborumomniscorrupti.jpg"},
-    {"id":17,"email":"jstarr4@spiegel.de","first_name":"Jenny","last_name":"Starr",
-     "avatar":"https://robohash.org/etquaerateligendi.jpg"},
-    {"id":18,"email":"lclemoes5@cnet.com","first_name":"Lynnette","last_name":"Clemoes",
-     "avatar":"https://robohash.org/oditautitaque.jpg"},
-    {"id":19,"email":"thurndall6@pcworld.com","first_name":"Torre","last_name":"Hurndall",
-     "avatar":"https://robohash.org/voluptasminusconsequatur.jpg"},
+    {"id": 13, "email": "aouterbridge0@cdc.gov", "first_name": "Addi", "last_name": "Outerbridge",
+     "avatar": "https://robohash.org/voluptatemollitianecessitatibus.jpg"},
+    {"id": 14, "email": "gzanuciolii1@hugedomains.com", "first_name": "Grissel", "last_name": "Zanuciolii",
+     "avatar": "https://robohash.org/estutqui.jpg"},
+    {"id": 15, "email": "gpenquet2@mozilla.com", "first_name": "Gwen", "last_name": "Penquet",
+     "avatar": "https://robohash.org/optiodelectusvoluptates.jpg"},
+    {"id": 16, "email": "bfeast3@usda.gov", "first_name": "Brunhilda", "last_name": "Feast",
+     "avatar": "https://robohash.org/laborumomniscorrupti.jpg"},
+    {"id": 17, "email": "jstarr4@spiegel.de", "first_name": "Jenny", "last_name": "Starr",
+     "avatar": "https://robohash.org/etquaerateligendi.jpg"},
+    {"id": 18, "email": "lclemoes5@cnet.com", "first_name": "Lynnette", "last_name": "Clemoes",
+     "avatar": "https://robohash.org/oditautitaque.jpg"},
+    {"id": 19, "email": "thurndall6@pcworld.com", "first_name": "Torre", "last_name": "Hurndall",
+     "avatar": "https://robohash.org/voluptasminusconsequatur.jpg"},
 ]
 
 
@@ -80,7 +79,6 @@ def return_single_user(user_to_find):
 # GET LIST OF USERS
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
-
     pageno = str(pageno)
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
 
@@ -97,7 +95,7 @@ def return_users(pageno):
 @app.route('/api/users/<user_to_find>', methods=["DELETE"])
 def delete_user(user_to_find):
     user_to_find = int(user_to_find)
-    for index in range(0, len(users)):
+    for index in range(0, len(users) - 1):
         for key, values in users[index].items():
             if user_to_find != values:
                 try:

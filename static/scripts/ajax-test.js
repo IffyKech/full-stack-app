@@ -68,6 +68,27 @@ function displayListOfUsers(ev, pageNo) {
 }
 
 
+function refreshListOfUsers(pageNo) {
+
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            let users = JSON.parse(this.responseText);
+            changeTableContents("tblUsers", users, pageNo)
+
+        }
+
+    }
+
+    xmlhttp.open("GET", "http://127.0.0.1:5000/api/users", true);
+    xmlhttp.send();
+
+}
+
+
 /**
  * Sets each row in an existing table to a list of users
  *
@@ -174,8 +195,7 @@ function deleteUser() {
 
             if (this.readyState === 4 && this.status === 200 ) {
 
-                let users = JSON.parse(this.responseText);
-                displayListOfUsers(undefined, currentPage);
+                refreshListOfUsers(currentPage);
 
             }
 
