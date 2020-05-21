@@ -77,7 +77,8 @@ function refreshListOfUsers(pageNo) {
         if (this.readyState === 4 && this.status === 200) {
 
             let users = JSON.parse(this.responseText);
-            changeTableContents("tblUsers", users, pageNo)
+            getTotalPages();
+            changeTableContents("tblUsers", users, pageNo);
 
         }
 
