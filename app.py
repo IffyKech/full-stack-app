@@ -111,19 +111,18 @@ def delete_user(user_to_find):
 
 
 # CREATE USER
-@app.route('api/users', methods=["POST"])
+@app.route('/api/users', methods=["POST"])
 def create_user():
     # get query string args to retrieve the inputs from the form
     first_name = request.args['first_name']
     last_name = request.args['last_name']
     email = request.args['email']
-    id = users[-1]['id'] + 1  # set the user's ID to the ID after the last user in the list
+    user_id = users[-1]['id'] + 1  # set the user's ID to the ID after the last user in the list
 
     # add the new user to the end of the list of users
-    users.append({"id": id, "email": email, "first_name": first_name, "last_name": last_name})
+    users.append({"id": user_id, "email": email, "first_name": first_name, "last_name": last_name})
 
     return jsonify(users)
-
 
 
 if __name__ == '__main__':
