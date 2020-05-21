@@ -1,5 +1,5 @@
 """ Full page app """
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
@@ -108,6 +108,22 @@ def delete_user(user_to_find):
                 del users[index]
                 break
     return jsonify(users)
+
+
+# CREATE USER
+@app.route('api/users', methods=["POST"])
+def create_user():
+    # get query string args to retrieve the inputs from the form
+    first_name = request.args['first_name']
+    last_name = request.args['last_name']
+    email = request.args['email']
+    id = users[-1]['id'] + 1  # set the user's ID to the ID after the last user in the list
+
+    # add the new user to the end of the list of users
+    users.append({"id": id, "email": email, "first_name": first_name, "last_name": last_name})
+
+    return jsonify(users)
+
 
 
 if __name__ == '__main__':
