@@ -101,6 +101,7 @@ def delete_user(user_to_find):
     return "Missing user"
 
 
+# TODO: bug fixing needed to delete newly created user
 
 # CREATE USER
 @app.route('/api/users', methods=["POST"])
@@ -121,6 +122,7 @@ def create_user():
 @app.route('/undefined', methods=["GET"])
 def catch_err():
     return "404 Page Not Found"
+
 
 if __name__ == '__main__':
     app.run()
