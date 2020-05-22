@@ -82,11 +82,11 @@ def return_users(pageno):
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
 
     try:
-        test = users[start_slice]  # evaluation statement for try block, checks if the page entered contains users
         end_slice = start_slice + 6
-        return jsonify(users[start_slice: end_slice])
+        users = users[start_slice: end_slice]
+        return jsonify(users)
 
-    except IndexError:  # runs if the eval statement above fails
+    except IndexError:  # runs if the try statement above fails
         return "404 Page Not Found"
 
 
@@ -107,7 +107,6 @@ def delete_user(user_to_find):
     return "Missing user"
 
 
-# TODO: bug fixing needed to delete newly created user
 # CREATE USER
 @app.route('/api/users', methods=["POST"])
 def create_user():
