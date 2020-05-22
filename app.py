@@ -5,54 +5,16 @@ import json
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
-# users = [
-#     {"id": 1, "email": "george.bluth@reqres.in", "first_name": "George", "last_name": "Bluth",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"},
-#     {"id": 2, "email": "janet.weaver@reqres.in", "first_name": "Janet", "last_name": "Weaver",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"},
-#     {"id": 3, "email": "emma.wong@reqres.in", "first_name": "Emma", "last_name": "Wong",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"},
-#     {"id": 4, "email": "eve.holt@reqres.in", "first_name": "Eve", "last_name": "Holt",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"},
-#     {"id": 5, "email": "charles.morris@reqres.in", "first_name": "Charles", "last_name": "Morris",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"},
-#     {"id": 6, "email": "tracey.ramos@reqres.in", "first_name": "Tracey", "last_name": "Ramos",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg"},
-#     {"id": 7, "email": "michael.lawson@reqres.in", "first_name": "Michael", "last_name": "Lawson",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/follettkyle/128.jpg"},
-#     {"id": 8, "email": "lindsay.ferguson@reqres.in", "first_name": "Lindsay", "last_name": "Ferguson",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/araa3185/128.jpg"},
-#     {"id": 9, "email": "tobias.funke@reqres.in", "first_name": "Tobias", "last_name": "Funke",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/vivekprvr/128.jpg"},
-#     {"id": 10, "email": "byron.fields@reqres.in", "first_name": "Byron", "last_name": "Fields",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/russoedu/128.jpg"},
-#     {"id": 11, "email": "george.edwards@reqres.in", "first_name": "George", "last_name": "Edwards",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg"},
-#     {"id": 12, "email": "rachel.howell@reqres.in", "first_name": "Rachel", "last_name": "Howell",
-#      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
-#     {"id": 13, "email": "sarstall0@berkeley.edu", "first_name": "Sigfrid", "last_name": "Arstall",
-#      "avatar": "https://robohash.org/nontemporaeum.jpg?size=25x25&set=set1"},
-#     {"id": 14, "email": "ptrood1@wunderground.com", "first_name": "Phillis", "last_name": "Trood",
-#      "avatar": "https://robohash.org/ipsaetet.jpg?size=25x25&set=set1"},
-#     {"id": 15, "email": "amolloy2@yale.edu", "first_name": "Amii", "last_name": "Molloy",
-#      "avatar": "https://robohash.org/temporibuspossimusdolorum.jpg?size=25x25&set=set1"},
-#     {"id": 16, "email": "bstobbes3@xing.com", "first_name": "Byron", "last_name": "Stobbes",
-#      "avatar": "https://robohash.org/praesentiumdolortotam.jpg?size=25x25&set=set1"},
-#     {"id": 17, "email": "cjoris4@blogtalkradio.com", "first_name": "Cristian", "last_name": "Joris",
-#      "avatar": "https://robohash.org/quaeeosautem.jpg?size=25x25&set=set1"},
-#     {"id": 18, "email": "cdodshon5@state.tx.us", "first_name": "Connie", "last_name": "Dodshon",
-#      "avatar": "https://robohash.org/sitreprehenderitsint.jpg?size=25x25&set=set1"},
-#     {"id": 19, "email": "jsyme6@boston.com", "first_name": "Jo", "last_name": "Syme",
-#      "avatar": "https://robohash.org/dolorumquasiquam.jpg?size=25x25&set=set1"}
-# ]
-
 
 def read_user_file():
+    """ Reads the user text file to retrieve all the users of the webpage. Then stores them in an array and returns
+    the array to be used elsewhere """
+
     users = []
 
     with open("users.txt", 'r') as f:
         line = f.readline()
-        line = line.strip("\n")
+        line = line.strip("\n")  # get rid of newlines
 
         while line != "":
             line = json.loads(line)  # convert string to dictionary
@@ -62,7 +24,14 @@ def read_user_file():
 
 
 def rewrite_user_file(users):
+    """
+    Rewrites the user file when a new change is made to the users list (e.g. user is deleted)
+
+    :param users: array of object of users
+    :return:
+    """
     with open("users.txt", 'w') as f:
+        # json.dumps converts dictionary to string (so it can be written to file)
         f.write(json.dumps(users[0]) + "\n")
 
     with open("users.txt", 'a') as f:
@@ -113,7 +82,7 @@ def return_users(pageno):
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
 
     try:
-        test = users[start_slice]  # eval statement for try block, checks if the page entered contains users
+        test = users[start_slice]  # evaluation statement for try block, checks if the page entered contains users
         end_slice = start_slice + 6
         return jsonify(users[start_slice: end_slice])
 
