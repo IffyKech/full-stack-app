@@ -1,5 +1,6 @@
 """ Full page app """
 from flask import Flask, render_template, jsonify, request
+import os
 
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
@@ -29,21 +30,24 @@ users = [
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg"},
     {"id": 12, "email": "rachel.howell@reqres.in", "first_name": "Rachel", "last_name": "Howell",
      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hebertialmeida/128.jpg"},
-    {"id": 13, "email": "aouterbridge0@cdc.gov", "first_name": "Addi", "last_name": "Outerbridge",
-     "avatar": "https://robohash.org/voluptatemollitianecessitatibus.jpg"},
-    {"id": 14, "email": "gzanuciolii1@hugedomains.com", "first_name": "Grissel", "last_name": "Zanuciolii",
-     "avatar": "https://robohash.org/estutqui.jpg"},
-    {"id": 15, "email": "gpenquet2@mozilla.com", "first_name": "Gwen", "last_name": "Penquet",
-     "avatar": "https://robohash.org/optiodelectusvoluptates.jpg"},
-    {"id": 16, "email": "bfeast3@usda.gov", "first_name": "Brunhilda", "last_name": "Feast",
-     "avatar": "https://robohash.org/laborumomniscorrupti.jpg"},
-    {"id": 17, "email": "jstarr4@spiegel.de", "first_name": "Jenny", "last_name": "Starr",
-     "avatar": "https://robohash.org/etquaerateligendi.jpg"},
-    {"id": 18, "email": "lclemoes5@cnet.com", "first_name": "Lynnette", "last_name": "Clemoes",
-     "avatar": "https://robohash.org/oditautitaque.jpg"},
-    {"id": 19, "email": "thurndall6@pcworld.com", "first_name": "Torre", "last_name": "Hurndall",
-     "avatar": "https://robohash.org/voluptasminusconsequatur.jpg"},
+    {"id": 13, "email": "sarstall0@berkeley.edu", "first_name": "Sigfrid", "last_name": "Arstall",
+     "avatar": "https://robohash.org/nontemporaeum.jpg?size=25x25&set=set1"},
+    {"id": 14, "email": "ptrood1@wunderground.com", "first_name": "Phillis", "last_name": "Trood",
+     "avatar": "https://robohash.org/ipsaetet.jpg?size=25x25&set=set1"},
+    {"id": 15, "email": "amolloy2@yale.edu", "first_name": "Amii", "last_name": "Molloy",
+     "avatar": "https://robohash.org/temporibuspossimusdolorum.jpg?size=25x25&set=set1"},
+    {"id": 16, "email": "bstobbes3@xing.com", "first_name": "Byron", "last_name": "Stobbes",
+     "avatar": "https://robohash.org/praesentiumdolortotam.jpg?size=25x25&set=set1"},
+    {"id": 17, "email": "cjoris4@blogtalkradio.com", "first_name": "Cristian", "last_name": "Joris",
+     "avatar": "https://robohash.org/quaeeosautem.jpg?size=25x25&set=set1"},
+    {"id": 18, "email": "cdodshon5@state.tx.us", "first_name": "Connie", "last_name": "Dodshon",
+     "avatar": "https://robohash.org/sitreprehenderitsint.jpg?size=25x25&set=set1"},
+    {"id": 19, "email": "jsyme6@boston.com", "first_name": "Jo", "last_name": "Syme",
+     "avatar": "https://robohash.org/dolorumquasiquam.jpg?size=25x25&set=set1"}
 ]
+
+
+def load_users():
 
 
 @app.route('/')
@@ -95,14 +99,13 @@ def return_users(pageno):
 @app.route('/api/users/<user_to_find>', methods=["DELETE"])
 def delete_user(user_to_find):
     user_to_find = int(user_to_find)
-    for index in range(0, len(users) - 1):
+    for index in range(0, len(users)):
         if users[index]["id"] == user_to_find:
             return jsonify(users)
     return "Missing user"
 
 
 # TODO: bug fixing needed to delete newly created user
-
 # CREATE USER
 @app.route('/api/users', methods=["POST"])
 def create_user():
