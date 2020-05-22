@@ -51,13 +51,24 @@ def read_user_file():
     users = []
 
     with open("users.txt", 'r') as f:
-        line = f.readline().strip("\n")
+        line = f.readline()
+        line = line.strip("\n")
 
         while line != "":
             line = json.loads(line)  # convert string to dictionary
             users.append(line)
             line = f.readline().strip("\n")
     return users
+
+
+def rewrite_user_file(users):
+    with open("users.txt", 'w') as f:
+        f.write(json.dumps(users[0]) + "\n")
+
+    with open("users.txt", 'a') as f:
+        for index in range(1, len(users)):
+            f.write(json.dumps(users[index]) + "\n")
+
 
 @app.route('/')
 def load_html_file():
@@ -69,6 +80,7 @@ def return_css(file):
     return app.send_static_file(file)
 
 
+# GET LIST OF USERS
 @app.route('/api/users')
 def return_all_users():
     users = read_user_file()
@@ -92,15 +104,16 @@ def return_single_user(user_to_find):
                 return jsonify(user)
 
 
-# GET LIST OF USERS
+# GET LIST OF USERS (PAGING)
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
     users = read_user_file()
+
     pageno = str(pageno)
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
 
     try:
-        print(users[start_slice])  # eval statement for try block, checks if the page entered contains users
+        test = users[start_slice]  # eval statement for try block, checks if the page entered contains users
         end_slice = start_slice + 6
         return jsonify(users[start_slice: end_slice])
 
@@ -116,6 +129,11 @@ def delete_user(user_to_find):
 
     for index in range(0, len(users)):
         if users[index]["id"] == user_to_find:
+            del users[index]
+
+            # rewrite new list of users to file
+            rewrite_user_file(users)
+
             return jsonify(users)
     return "Missing user"
 
@@ -125,6 +143,7 @@ def delete_user(user_to_find):
 @app.route('/api/users', methods=["POST"])
 def create_user():
     users = read_user_file()
+
     # get query string args to retrieve the inputs from the form
     first_name = request.args['fname']
     last_name = request.args['lname']
@@ -133,6 +152,9 @@ def create_user():
 
     # add the new user to the end of the list of users
     users.append({"id": user_id, "email": email, "first_name": first_name, "last_name": last_name})
+
+    # rewrite new list of users to file
+    rewrite_user_file(users)
 
     return jsonify(users)
 
@@ -145,4 +167,3 @@ def catch_err():
 
 if __name__ == '__main__':
     app.run()
-
