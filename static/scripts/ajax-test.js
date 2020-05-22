@@ -210,6 +210,31 @@ function deleteUser() {
 
 }
 
+function createUser() {
+
+    let userEmail = document.getElementById("newUserEmail").value;
+    let userFirstName = document.getElementById("newUserFirstName").value;
+    let userLastName = document.getElementById("newUserLastName").value;
+
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            refreshListOfUsers(currentPage);
+
+        }
+
+    }
+
+    xmlhttp.open("POST", "http://127.0.0.1:5000/api/users?email=" + userEmail.toString() + "&fname=" +
+        userFirstName.toString() + "&lname=" + userLastName.toString());
+
+    xmlhttp.send();
+
+}
+
 
 initPage = function() {
 
@@ -241,10 +266,28 @@ initPage = function() {
     }
 
     // edit user buttons
-    let saveUserButton = document.getElementById("btnSaveUser");
-    let deleteUserButton = document.getElementById("btnDeleteUser");
 
+    /**
+     * SAVE USER, sets the save button to a function that saves the selected user
+     *
+     */
+    let saveUserButton = document.getElementById("btnSaveUser");
+
+
+    /**
+     * DELETE USER, sets the delete button to a function that deletes the selected user
+     *
+     */
+    let deleteUserButton = document.getElementById("btnDeleteUser");
     deleteUserButton.addEventListener("click", function () {deleteUser()});
+
+
+    /**
+     *  CREATE USER, sets the new user button to a function that creates a new user based on the form input
+     *
+     */
+    let createUserButton = document.getElementById("btnNewUser");
+    createUserButton.addEventListener("click", function () {createUser()});
 
 }
 

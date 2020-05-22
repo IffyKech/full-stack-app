@@ -114,8 +114,8 @@ def delete_user(user_to_find):
 @app.route('/api/users', methods=["POST"])
 def create_user():
     # get query string args to retrieve the inputs from the form
-    first_name = request.args['first_name']
-    last_name = request.args['last_name']
+    first_name = request.args['fname']
+    last_name = request.args['lname']
     email = request.args['email']
     user_id = users[-1]['id'] + 1  # set the user's ID to the ID after the last user in the list
 
