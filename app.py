@@ -96,18 +96,10 @@ def return_users(pageno):
 def delete_user(user_to_find):
     user_to_find = int(user_to_find)
     for index in range(0, len(users) - 1):
-        for key, values in users[index].items():
-            if user_to_find != values:
-                try:
-                    if int(user_to_find) == values:
-                        del users[index]
-                        break
-                except ValueError:
-                    pass
-            else:
-                del users[index]
-                break
-    return jsonify(users)
+        if users[index]["id"] == user_to_find:
+            return jsonify(users)
+    return "Missing user"
+
 
 
 # CREATE USER
@@ -124,6 +116,11 @@ def create_user():
 
     return jsonify(users)
 
+
+# ERROR CATCHING
+@app.route('/undefined', methods=["GET"])
+def catch_err():
+    return "404 Page Not Found"
 
 if __name__ == '__main__':
     app.run()
