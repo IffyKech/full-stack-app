@@ -47,9 +47,6 @@ users = [
 ]
 
 
-def load_users():
-
-
 @app.route('/')
 def load_html_file():
     return render_template("users.html")
