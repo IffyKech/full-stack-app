@@ -2,6 +2,8 @@
 from flask import Flask, render_template, jsonify, request
 import json
 
+# TODO: last feature: Update user
+
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
