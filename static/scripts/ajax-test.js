@@ -236,6 +236,30 @@ function createUser() {
 }
 
 
+function updateUser() {
+    let xmlhttp = new XMLHttpRequest();
+    let userToUpdate = document.getElementById("userID").value;
+    let updatedEmail = document.getElementById("userEmail").value;
+    let updatedFName = document.getElementById("userFirstName").value;
+    let updatedLName = document.getElementById("userLastName").value;
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            refreshListOfUsers(currentPage);
+
+        }
+
+    }
+
+    xmlhttp.open("PUT", "http://127.0.0.1:5000/api/users/" + userToUpdate.toString() +"?email=" +
+        updatedEmail.toString() + "&fname=" + updatedFName.toString() + "&lname=" + updatedLName.toString(), true);
+    xmlhttp.send();
+
+}
+
+
 initPage = function() {
 
     getTotalPages();
@@ -272,6 +296,7 @@ initPage = function() {
      *
      */
     let saveUserButton = document.getElementById("btnSaveUser");
+    saveUserButton.addEventListener("click", function () {updateUser()});
 
 
     /**

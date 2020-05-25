@@ -3,6 +3,9 @@ from flask import Flask, render_template, jsonify, request
 import json
 
 # TODO: last feature: Update user
+# TODO: consider refactoring to make different to others, make some docstrings for
+#  functions and add comments where possible
+# TODO: think about adding avatar to create user and update user
 
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
@@ -125,6 +128,25 @@ def create_user():
 
     # rewrite new list of users to file
     rewrite_user_file(users)
+
+    return jsonify(users)
+
+
+# UPDATE USER
+@app.route('/api/users/<user_to_find>', methods=["PUT"])
+def update_user(user_to_find):
+    users = read_user_file()
+
+    updated_email = request.args['email']
+    updated_first_name = request.args['fname']
+    updated_last_name = request.args['lname']
+    for user in users:
+        if user['id'] == int(user_to_find):
+            user['email'] = updated_email
+            user['first_name'] = updated_first_name
+            user['last_name'] = updated_last_name
+
+            rewrite_user_file(users)
 
     return jsonify(users)
 
