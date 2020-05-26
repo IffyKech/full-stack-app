@@ -2,19 +2,18 @@
 from flask import Flask, render_template, jsonify, request
 import json
 
-# TODO: last feature: Update user
-# TODO: consider refactoring to make different to others, make some docstrings for
-#  functions and add comments where possible
-# TODO: think about adding avatar to create user and update user
 
 app = Flask(__name__, static_url_path='')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 
 def read_user_file():
-    """ Reads the user text file to retrieve all the users of the webpage. Then stores them in an array and returns
-    the array to be used elsewhere """
+    """
+    Reads the user text file to retrieve all the users of the webpage. Then stores them in an array and returns
+    the array to be used elsewhere
 
+    :return users: array of users
+    """
     users = []
 
     with open("users.txt", 'r') as f:
@@ -57,6 +56,7 @@ def return_css(file):
 # GET LIST OF USERS
 @app.route('/api/users')
 def return_all_users():
+    # get list of users from the file and assign to function
     users = read_user_file()
     return jsonify(users)
 
@@ -64,6 +64,13 @@ def return_all_users():
 # GET SINGLE USER
 @app.route('/api/users/<user_to_find>', methods=["GET"])
 def return_single_user(user_to_find):
+    """
+    Returns a single user by searching through the list of users and comparing the attribute provided to the attributes
+    in the user list
+
+    :param user_to_find: Attribute of user that is needed to find
+    :return user: dict item of the user that is being searched for
+    """
     users = read_user_file()
 
     for user in users:
@@ -72,7 +79,7 @@ def return_single_user(user_to_find):
                 try:
                     if int(user_to_find) == value:  # convert user_attr to int to check if it is the ID
                         return jsonify(user)
-                except ValueError:
+                except ValueError:  # if the ID cannot be converted to an integer
                     pass
             else:  # if the user searched for is in the list of users
                 return jsonify(user)
@@ -81,13 +88,22 @@ def return_single_user(user_to_find):
 # GET LIST OF USERS (PAGING)
 @app.route('/api/users/page<pageno>', methods=["GET"])
 def return_users(pageno):
+    """
+    Returns a list of users based on the page number provided. Pages can only have 6 users so the function users the
+    page number to determine where to slice the list based on the 6 users that should be on that page.
+
+    :param pageno: The page number that someone is attempting to load
+    :return users: array of users to display
+    """
     users = read_user_file()
 
-    pageno = str(pageno)
+    # calculates the index of the first user to return
     start_slice = (5 * (int(pageno) - 1) + int(pageno) - 1)
 
+    # try block checks if the end_slice calculated would not be an index in the list (meaning that there is not a
+    # full 6 users on that page)
     try:
-        end_slice = start_slice + 6
+        end_slice = start_slice + 6  # if this index is greater than the amount of indexes in the list
         users = users[start_slice: end_slice]
         return jsonify(users)
 
@@ -98,12 +114,19 @@ def return_users(pageno):
 # DELETE USER
 @app.route('/api/users/<user_to_find>', methods=["DELETE"])
 def delete_user(user_to_find):
+    """
+    Searches the list of users to delete the user that is being looked for. Uses an ID parameter to compare and search
+    for the user being looked for. Then rewrites the user file to have the new updated list of users.
+
+    :param user_to_find: ID of the user that is meant to be deleted
+    :return:
+    """
     users = read_user_file()
     user_to_find = int(user_to_find)
 
     for index in range(0, len(users)):
         if users[index]["id"] == user_to_find:
-            del users[index]
+            del users[index]  # delete the current user searched for from the for loop
 
             # rewrite new list of users to file
             rewrite_user_file(users)
@@ -115,6 +138,12 @@ def delete_user(user_to_find):
 # CREATE USER
 @app.route('/api/users', methods=["POST"])
 def create_user():
+    """
+    Creates a new user by setting values based on the query string arguments provided in frontend. Then rewrites the
+    user list file to contain the new set of users
+
+    :return users: List of users to display
+    """
     users = read_user_file()
 
     # get query string args to retrieve the inputs from the form
@@ -135,6 +164,13 @@ def create_user():
 # UPDATE USER
 @app.route('/api/users/<user_to_find>', methods=["PUT"])
 def update_user(user_to_find):
+    """
+    Updates an existing user by searching for the user with an ID. Then retrieves the new update details to be written
+    from the query string and updates the user. Finally, updates the user list file with the list of new users.
+
+    :param user_to_find: ID of the user being searched for
+    :return users: List of users to be displayed
+    """
     users = read_user_file()
 
     updated_email = request.args['email']
@@ -157,5 +193,6 @@ def catch_err():
     return "404 Page Not Found"
 
 
+# makes sure the application isn't run when loaded as a library
 if __name__ == '__main__':
     app.run()

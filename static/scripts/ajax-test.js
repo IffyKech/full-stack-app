@@ -1,10 +1,13 @@
 let currentPage = 1;
 let totalPages;
 
-// TODO: for post, get details to create (e.g. fname, lname etc.) and make an object (dictionary) of those values,
-// then send the object to a resource for the backend to receive and unpack and add to the database
-
 function getTotalPages() {
+    /**
+     * Get the total amount of pages based on the amount of users in the list. Then updates an element in the HTML
+     * to reflect the number
+     *
+     * @type {XMLHttpRequest}
+     */
 
     let xmlhttp = new XMLHttpRequest();
 
@@ -12,7 +15,7 @@ function getTotalPages() {
 
         if (this.readyState === 4 && this.status === 200) {
 
-            let amountOfUsers = JSON.parse(this.responseText).length;
+            let amountOfUsers = JSON.parse(this.responseText).length; // get the amount of users based on length of list
             // round the amount of users to the nearest multiple of 6 (to prevent 'totalPages' from being a float)
             totalPages = (Math.ceil(amountOfUsers / 6) * 6) / 6;
             document.getElementById("totalPages").innerHTML = totalPages;
@@ -25,9 +28,13 @@ function getTotalPages() {
     xmlhttp.send();
 
 }
+
+
 /**
+ * Display the page of users to be displayed based on the currentPage variable. The variable is managed based on the
+ * buttons pressed
  *
- * @param ev - button clicked
+ * @param ev- button clicked
  * @param {int} pageNo - the route number for the page of users
  */
 function displayListOfUsers(ev, pageNo) {
@@ -69,6 +76,12 @@ function displayListOfUsers(ev, pageNo) {
 
 
 function refreshListOfUsers(pageNo) {
+    /**
+     * Refresh the HTML table to show the new user list whenever a change is made to it
+     *
+     * @param pageNo - the page that needs to be updated to show new users
+     * @type {XMLHttpRequest}
+     */
 
     let xmlhttp = new XMLHttpRequest();
 
@@ -131,6 +144,11 @@ function changeTableContents(tableID, users, pageNo) {
 
 
 function findUserToDisplay (ev) {
+    /**
+     * Searches for the user to be displayed by looking at the current HTML element clicked on
+     *
+     * @type {string | Element | T | EventTarget | Node | SVGAnimatedString | HTMLElement}
+     */
 
     // targets the user that is clicked on to display that specific user
     let target = ev.target;
@@ -159,31 +177,42 @@ function findUserToDisplay (ev) {
 }
 
 
-function displaySingleUser(users){
+function displaySingleUser(user){
+    /**
+     * Displays a user by changing the HTML elements of the display window to the values of the user that is found
+     *
+     * @param users - the user that has been clicked on and should be displayed
+     * @type {HTMLElement}
+     */
 
     let userId = document.getElementById("userID");
-    userId.value = users.id;
+    userId.value = user.id;
 
     let userEmail = document.getElementById("userEmail");
-    userEmail.value = users.email;
+    userEmail.value = user.email;
 
     let userName = document.getElementById("userFirstName");
-    userName.value = users.first_name;
+    userName.value = user.first_name;
 
     let userSurname = document.getElementById("userLastName");
-    userSurname.value = users.last_name;
+    userSurname.value = user.last_name;
 
     let userAvatar = document.getElementById("userAvatar");
-    userAvatar.src = users.avatar;
+    userAvatar.src = user.avatar;
 
 }
 
 
 function deleteUser() {
+    /**
+     * Gets the user to delete by retrieving the ID of the current user that is clicked on. Then refreshes the table
+     * to show the updated list of users
+     */
 
     // ID of the user to delete
     let IDToDelete = document.getElementById("userID").value;
 
+    // if no user was clicked on to delete
     if (IDToDelete === "") {
         alert("Select a user to delete");
     }
@@ -211,6 +240,10 @@ function deleteUser() {
 }
 
 function createUser() {
+    /**
+     * Creates a new user by retrieving the values written in the form's inputs. Then passes them as query string
+     * arguments for the backend to retrieve. Lastly, refreshes the table of users to display the new list of users.
+     */
 
     let userEmail = document.getElementById("newUserEmail").value;
     let userFirstName = document.getElementById("newUserFirstName").value;
@@ -237,31 +270,50 @@ function createUser() {
 
 
 function updateUser() {
-    let xmlhttp = new XMLHttpRequest();
+    /**
+     * Updates a current user by getting the form's inputs and passing them as query string args. The backend saves the
+     * new details and returns the new list. The function then refreshes the HTML table with the new list of users
+     *
+     */
     let userToUpdate = document.getElementById("userID").value;
-    let updatedEmail = document.getElementById("userEmail").value;
-    let updatedFName = document.getElementById("userFirstName").value;
-    let updatedLName = document.getElementById("userLastName").value;
 
-    xmlhttp.onreadystatechange = function () {
+    // if no user to update was clicked on
+    if (userToUpdate === ""){
+        alert("Select a user to update");
+    }
 
-        if (this.readyState === 4 && this.status === 200) {
+    else {
+        let updatedEmail = document.getElementById("userEmail").value;
+        let updatedFName = document.getElementById("userFirstName").value;
+        let updatedLName = document.getElementById("userLastName").value;
+        let xmlhttp = new XMLHttpRequest();
 
-            refreshListOfUsers(currentPage);
+
+        xmlhttp.onreadystatechange = function () {
+
+            if (this.readyState === 4 && this.status === 200) {
+
+                refreshListOfUsers(currentPage);
+
+            }
 
         }
 
+        xmlhttp.open("PUT", "http://127.0.0.1:5000/api/users/" + userToUpdate.toString() +"?email=" +
+            updatedEmail.toString() + "&fname=" + updatedFName.toString() + "&lname=" + updatedLName.toString(), true);
+        xmlhttp.send();
     }
 
-    xmlhttp.open("PUT", "http://127.0.0.1:5000/api/users/" + userToUpdate.toString() +"?email=" +
-        updatedEmail.toString() + "&fname=" + updatedFName.toString() + "&lname=" + updatedLName.toString(), true);
-    xmlhttp.send();
 
 }
 
 
 initPage = function() {
+    /**
+     * initialize function, loads when the script is run and configures HTML elements.
+     */
 
+    // Displays the amount of pages in a HTML element
     getTotalPages();
     
     /**
